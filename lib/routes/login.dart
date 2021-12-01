@@ -66,8 +66,18 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 20,),
             const Text("登录知乎日报"),
             const SizedBox(height: 10,),
-            const Text("账号"),
-            const Text("密码"),
+            const Text(
+                "账号",
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            const Text(
+                "密码",
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
