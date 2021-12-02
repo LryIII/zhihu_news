@@ -27,6 +27,31 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
+      body: Column(
+        children: const [
+          Text(
+            "用户名",
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+             "账号",
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+             "密码",
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
