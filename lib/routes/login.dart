@@ -68,6 +68,24 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 10,),
             const Text("账号"),
             const Text("密码"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: const Text(
+                      "注册",
+                      style: TextStyle(
+                        color: Colors.blueAccent,
+                        fontSize: 15.0
+                      ),
+                    )
+                ),
+                const SizedBox(width: 30.0,),
+              ],
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
