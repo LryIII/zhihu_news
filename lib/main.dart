@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zhihu_news/routes/details.dart';
 import 'package:zhihu_news/routes/login.dart';
+import 'package:zhihu_news/routes/register.dart';
 import 'package:zhihu_news/tabs/home_content.dart';
 
 void main() {
@@ -25,6 +26,7 @@ class _MyAppState extends State<MyApp> {
           '/':(context)=>const HomeContent(),
           '/details':(context,{arguments})=>Details(arguments:arguments),
           '/login':(context)=>const LoginPage(),
+          '/register':(context)=>const RegisterPage(),
         };
 
         final String? name=settings.name;
