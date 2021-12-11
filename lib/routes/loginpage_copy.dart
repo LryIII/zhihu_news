@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:zhihu_news/tabs/home_content.dart';
 
 class RootPage extends StatelessWidget {
   const RootPage({Key? key}) : super(key: key);
@@ -45,9 +46,33 @@ class _TestPageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("登录"),
+          leading: IconButton(
+            onPressed: () {
+              // Navigator.of(context).pushAndRemoveUntil(
+              //     MaterialPageRoute(
+              //         builder: (context)=>const HomeContent()
+              //     ),
+              //     (route) => route==null,
+              // );
+
+              //Navigator.popUntil(context, (route) => false);
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          title: const Text(
+            "登录-知乎",
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
         ),
         //登录页面的主体
+        resizeToAvoidBottomInset: false,
         body: buildLoginWidget(),
       ),
     );
@@ -55,30 +80,67 @@ class _TestPageState extends State<HomePage> {
 
 //登录页面的主体
   Widget buildLoginWidget() {
-    return Container(
-      margin: const EdgeInsets.all(30.0),
-      //线性布局
+    return SingleChildScrollView(
       child: Column(
         children: [
+          buildImage(),
           //用户名输入框
           buildUserNameWidget(),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20,),
           //用户密码输入框
           buildUserPasswordWidget(),
-          const SizedBox(
-            height: 40,
-          ),
+          const SizedBox(height: 40,),
           //登录按钮
           SizedBox(
-            width: double.infinity,
+            width: 200,
             height: 40,
-            child: ElevatedButton(
-              child: const Text("登录"),
+            child:ElevatedButton(
               onPressed: () {
-                checkLoginFunction();
-              },
+                  //Navigator.pop(context);
+                  checkLoginFunction();
+                },
+              child: const SizedBox(
+                width: 100,
+                height: 30,
+                child: Text(
+                  "登录",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                )
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget buildImage() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 100.0,
+      decoration: const BoxDecoration(
+        color: Colors.blue,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Text(
+            "登录知乎",
+            style: TextStyle(
+              fontSize: 30.0,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            "发现更多可信赖的解答",
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
             ),
           )
         ],
@@ -91,38 +153,33 @@ class _TestPageState extends State<HomePage> {
       stream: _userPasswordStream.stream,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return
-          // ShakeAnimationWidget(
-          // //微左右的抖动
-          // shakeAnimationType: ShakeAnimationType.LeftRightShake,
-          // //设置不开启抖动
-          // isForward: false,
-          // //抖动控制器
-          // shakeAnimationController: _userPasswordAnimation,
-          // child:
-          TextField(
-            focusNode: _passwordFocusNode,
-            controller: _passwordController,
-            onSubmitted: (String value) {
-              if (checkUserPassword()) {
-                loginFunction();
-              } else {
-                FocusScope.of(context).requestFocus(_passwordFocusNode);
-              }
-            },
-            //隐藏输入的文本
-            obscureText: true,
-            //最大可输入1行
-            maxLines: 1,
-            //边框样式设置
-            decoration: InputDecoration(
-              labelText: "密码",
-              errorText: snapshot.data,
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              focusNode: _passwordFocusNode,
+              controller: _passwordController,
+              onSubmitted: (String value) {
+                if (checkUserPassword()) {
+                  loginFunction();
+                } else {
+                  FocusScope.of(context).requestFocus(_passwordFocusNode);
+                }
+              },
+              //隐藏输入的文本
+              obscureText: true,
+              //最大可输入1行
+              maxLines: 1,
+              //边框样式设置
+              decoration: InputDecoration(
+                labelText: "密码",
+                errorText: snapshot.data,
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
               ),
-            ),
-          //),
-        );
+            //),
+        ),
+          );
       },
     );
   }
@@ -135,43 +192,37 @@ class _TestPageState extends State<HomePage> {
       stream: _userNameStream.stream,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         return
-          // ShakeAnimationWidget(
-          // //微左右的抖动
-          // shakeAnimationType: ShakeAnimationType.LeftRightShake,
-          // //设置不开启抖动
-          // isForward: false,
-          // //抖动控制器
-          // shakeAnimationController: _userNameAnimation,
-          // child:
-          TextField(
-            //焦点控制
-            focusNode: _userNameFocusNode,
-            //文本控制器
-            controller: _userNameController,
-            //键盘回车键点击回调
-            onSubmitted: (String value) {
-              //点击校验，如果有内容输入 输入焦点跳入下一个输入框
-              if (checkUserName()) {
-                _userNameFocusNode.unfocus();
-                FocusScope.of(context).requestFocus(_passwordFocusNode);
-              } else {
-                FocusScope.of(context).requestFocus(_userNameFocusNode);
-              }
-            },
-            //边框样式设置
-            decoration: InputDecoration(
-              //红色的错误提示文本
-              errorText: snapshot.data,
-              labelText: "用户名",
-              //设置上下左右 都有边框
-              //设置四个角的弧度
-              border: const OutlineInputBorder(
-                //设置边框四个角的弧度
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              //焦点控制
+              focusNode: _userNameFocusNode,
+              //文本控制器
+              controller: _userNameController,
+              //键盘回车键点击回调
+              onSubmitted: (String value) {
+                //点击校验，如果有内容输入 输入焦点跳入下一个输入框
+                if (checkUserName()) {
+                  _userNameFocusNode.unfocus();
+                  FocusScope.of(context).requestFocus(_passwordFocusNode);
+                } else {
+                  FocusScope.of(context).requestFocus(_userNameFocusNode);
+                }
+              },
+              //边框样式设置
+              decoration: InputDecoration(
+                //红色的错误提示文本
+                errorText: snapshot.data,
+                labelText: "用户名",
+                //设置上下左右 都有边框
+                //设置四个角的弧度
+                border: const OutlineInputBorder(
+                  //设置边框四个角的弧度
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
               ),
             ),
-          //),
-        );
+          );
       },
     );
   }
@@ -223,5 +274,7 @@ class _TestPageState extends State<HomePage> {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
-  void loginFunction() {}
+  void loginFunction() {
+
+  }
 }
