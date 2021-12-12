@@ -147,7 +147,6 @@ class _TestPageState extends State<HomePage> {
       ),
     );
   }
-
   StreamBuilder<String> buildUserPasswordWidget() {
     return StreamBuilder<String>(
       stream: _userPasswordStream.stream,
@@ -209,16 +208,35 @@ class _TestPageState extends State<HomePage> {
                   FocusScope.of(context).requestFocus(_userNameFocusNode);
                 }
               },
+              // onChanged: (String value){
+              //   if(checkUserName()){
+              //     //_userNameController.clear();
+              //   }
+              // },
+              // onTap: (){
+              //   if(checkUserName()){
+              //     _userNameStream.close();
+              //   }
+              // },
               //边框样式设置
               decoration: InputDecoration(
                 //红色的错误提示文本
                 errorText: snapshot.data,
+
                 labelText: "用户名",
                 //设置上下左右 都有边框
                 //设置四个角的弧度
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color:Colors.blue)
+                ),
+                // enabledBorder: const OutlineInputBorder(
+                //     borderSide: BorderSide(color:Colors.blue)
+                // ),
                 border: const OutlineInputBorder(
                   //设置边框四个角的弧度
+                  borderSide: BorderSide(color:Colors.blue),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
+
                 ),
               ),
             ),
@@ -248,7 +266,8 @@ class _TestPageState extends State<HomePage> {
       return false;
     } else {
       //清除错误提示
-      _userNameStream.add("null");
+      //_userNameStream.add("");
+      // _userNameStream.add("");
       return true;
     }
   }
@@ -260,7 +279,7 @@ class _TestPageState extends State<HomePage> {
       //_userPasswordAnimation.start();
       return false;
     } else {
-      _userPasswordStream.add("null");
+      //_userPasswordStream.add("");
       return true;
     }
   }
