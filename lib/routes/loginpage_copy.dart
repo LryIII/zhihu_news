@@ -35,8 +35,8 @@ class _TestPageState extends State<HomePage> {
   final TextEditingController _passwordController = TextEditingController();
 
   //Stream 更新操作控制器
-  final StreamController<String> _userNameStream = StreamController();
-  final StreamController<String> _userPasswordStream = StreamController();
+  final StreamController<String?> _userNameStream = StreamController();
+  final StreamController<String?> _userPasswordStream = StreamController();
 
   @override
   Widget build(BuildContext context) {
@@ -148,8 +148,8 @@ class _TestPageState extends State<HomePage> {
       ),
     );
   }
-  StreamBuilder<String> buildUserPasswordWidget() {
-    return StreamBuilder<String>(
+  StreamBuilder<String?> buildUserPasswordWidget() {
+    return StreamBuilder<String?>(
       stream: _userPasswordStream.stream,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return
@@ -273,7 +273,7 @@ class _TestPageState extends State<HomePage> {
       //_userPasswordAnimation.start();
       return false;
     } else {
-      //_userPasswordStream.add("");
+      _userPasswordStream.add(null);
       return true;
     }
   }
