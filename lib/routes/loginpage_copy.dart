@@ -34,8 +34,8 @@ class _TestPageState extends State<HomePage> {
   final TextEditingController _passwordController = TextEditingController();
 
   //Stream 更新操作控制器
-  final StreamController<String> _userNameStream = StreamController();
-  final StreamController<String> _userPasswordStream = StreamController();
+  final StreamController<String?> _userNameStream = StreamController();
+  final StreamController<String?> _userPasswordStream = StreamController();
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +86,7 @@ class _TestPageState extends State<HomePage> {
           buildImage(),
           //用户名输入框
           buildUserNameWidget(),
-          const SizedBox(height: 20,),
+          const SizedBox(height: 10,),
           //用户密码输入框
           buildUserPasswordWidget(),
           const SizedBox(height: 40,),
@@ -148,13 +148,13 @@ class _TestPageState extends State<HomePage> {
     );
   }
 
-  StreamBuilder<String> buildUserPasswordWidget() {
-    return StreamBuilder<String>(
+  StreamBuilder<String?> buildUserPasswordWidget() {
+    return StreamBuilder<String?>(
       stream: _userPasswordStream.stream,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: TextField(
               focusNode: _passwordFocusNode,
               controller: _passwordController,
@@ -187,13 +187,13 @@ class _TestPageState extends State<HomePage> {
   ///用户名输入框 Stream 局部更新 error提示
   ///     ShakeAnimationWidget 抖动动画
   ///
-  StreamBuilder<String> buildUserNameWidget() {
-    return StreamBuilder<String>(
+  StreamBuilder<String?> buildUserNameWidget() {
+    return StreamBuilder<String?>(
       stream: _userNameStream.stream,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         return
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: TextField(
               //焦点控制
               focusNode: _userNameFocusNode,
@@ -248,7 +248,7 @@ class _TestPageState extends State<HomePage> {
       return false;
     } else {
       //清除错误提示
-      _userNameStream.add("null");
+      _userNameStream.add(null);
       return true;
     }
   }
@@ -260,7 +260,7 @@ class _TestPageState extends State<HomePage> {
       //_userPasswordAnimation.start();
       return false;
     } else {
-      _userPasswordStream.add("null");
+      _userPasswordStream.add(null);
       return true;
     }
   }
