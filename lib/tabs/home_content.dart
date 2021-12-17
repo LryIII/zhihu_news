@@ -42,18 +42,7 @@ class _HomeContentState extends State<HomeContent> {
       });
     }
   }
-  Map dateMap= {
-    "image_hue": "0x2c2230",
-    "title": "《四驱兄弟》各代车型的底盘型号有哪些？",
-    "url": "https://daily.zhihu.com/story/9743349",
-    "hint": "",
-    "ga_prefix": "121607",
-    "images": [
-      "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"
-    ],
-    "type": 0,
-    "id": 9743349
-  };
+
   _addData() async {
     Response response;
     var dio = Dio();
@@ -61,7 +50,16 @@ class _HomeContentState extends State<HomeContent> {
     if (response.statusCode == 200) {
       Map jsonResponse =response.data;
       setState(() {
-        dateMap["title"]=jsonResponse["date"];
+        Map dateMap= {
+          "image_hue": "0x2c2230",
+          "title": jsonResponse["date"],
+          "url": jsonResponse["stories"][0]["url"],
+          "hint": "",
+          "ga_prefix": "121607",
+          "images": [
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"
+          ],
+        };
         _stories.add(dateMap);
         _stories.addAll(jsonResponse["stories"]);
         addUrl='http://news.at.zhihu.com/api/4/news/before/'+jsonResponse["date"];
