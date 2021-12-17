@@ -165,6 +165,11 @@ class _TestPageState extends State<HomePage> {
                   FocusScope.of(context).requestFocus(_passwordFocusNode);
                 }
               },
+              onChanged: (data){
+                if(checkUserPassword()){
+
+                }
+              },
               //隐藏输入的文本
               obscureText: true,
               //最大可输入1行
@@ -207,6 +212,11 @@ class _TestPageState extends State<HomePage> {
                   FocusScope.of(context).requestFocus(_passwordFocusNode);
                 } else {
                   FocusScope.of(context).requestFocus(_userNameFocusNode);
+                }
+              },
+              onChanged: (data){
+                if(checkUserName()){
+
                 }
               },
               //边框样式设置
