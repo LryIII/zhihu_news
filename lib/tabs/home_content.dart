@@ -5,8 +5,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-//import 'package:dio/dio.dart';
-//import 'package:http/http.dart' as http;
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class HomeContent extends StatefulWidget {
