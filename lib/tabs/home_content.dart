@@ -1,12 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-//import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class HomeContent extends StatefulWidget {
@@ -23,50 +21,26 @@ class _HomeContentState extends State<HomeContent> {
     _getData();
   }
 
+  Map datall = {};
   List _stories = [], _topStories = [];
   int dateNow = 0, mo = 0, da = 0;
-  String la='',lada='',newUrl='';
-  String nowUrl='https://news-at.zhihu.com/api/3/news/latest';
   _getData() async {
-    Map datall = {};
-    var apiUrl = Uri.parse(nowUrl);
-    var response = await http.get(apiUrl);
+    Response response;
+    var dio = Dio();
+    response = await dio.get('https://news-at.zhihu.com/api/3/news/latest');
     if (response.statusCode == 200) {
-      _topStories = datall["top_stories"];
-      Map jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-      //var itemCount = jsonResponse['totalItems'];
+      Map jsonResponse =response.data;
       setState(() {
         datall = jsonResponse;
         _stories.addAll(datall["stories"]);
-        //_stories = datall["stories"];
+        _topStories = datall["top_stories"];
         dateNow = int.parse(datall["date"]);
         da = dateNow % 100;
         mo = (dateNow ~/ 100) % 100;
-        newUrl='http://news.at.zhihu.com/api/4/news/before/'+datall["date"];
-        print(datall["date"] is String);
-        print(datall["date"][6]);
-        print(la);
       });
-      //return jsonResponse;
-    } else {
-      //print('Request failed with status: ${response.statusCode}.');
     }
   }
-  _addData() async {
-    var apiUrl = Uri.parse(newUrl);
-    var response = await http.get(apiUrl);
-    if (response.statusCode == 200) {
-      Map jsonResponse =
-      convert.jsonDecode(response.body) as Map<String, dynamic>;
-      //var itemCount = jsonResponse['totalItems'];
-      setState(() {
-        _stories.addAll(jsonResponse["stories"]);
-        newUrl='http://news.at.zhihu.com/api/4/news/before/'+jsonResponse["date"];
-      });
-      //return jsonResponse;
-    }
-  }
+
   Map<String, String> month = {
     "0": "0",
     "01": "一月",
@@ -88,21 +62,20 @@ class _HomeContentState extends State<HomeContent> {
 
   void _onRefresh() async {
     // monitor network fetch
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadData()
     //items.add((items.length + 1).toString());
     if (mounted) {
       setState(() {
-        print(nowUrl);
-        _addData();
-        //_stories.addAll(datall["stories"]);
+        //_getData();
+        _stories.addAll(datall["stories"]);
       });
     }
     _refreshController.loadComplete();
