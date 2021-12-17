@@ -23,35 +23,50 @@ class _HomeContentState extends State<HomeContent> {
     _getData();
   }
 
-  Map datall = {};
   List _stories = [], _topStories = [];
   int dateNow = 0, mo = 0, da = 0;
+  String la='',lada='',newUrl='';
+  String nowUrl='https://news-at.zhihu.com/api/3/news/latest';
   _getData() async {
-    var apiUrl = Uri.parse('https://news-at.zhihu.com/api/3/news/latest');
+    Map datall = {};
+    var apiUrl = Uri.parse(nowUrl);
     var response = await http.get(apiUrl);
     if (response.statusCode == 200) {
+      _topStories = datall["top_stories"];
       Map jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
       //var itemCount = jsonResponse['totalItems'];
       setState(() {
         datall = jsonResponse;
         _stories.addAll(datall["stories"]);
-
         //_stories = datall["stories"];
-        _topStories = datall["top_stories"];
         dateNow = int.parse(datall["date"]);
         da = dateNow % 100;
         mo = (dateNow ~/ 100) % 100;
-        // print(datall["date"] is String);
-        // print(datall["date"][6]);
-        // print(dateNow%100);
+        newUrl='http://news.at.zhihu.com/api/4/news/before/'+datall["date"];
+        print(datall["date"] is String);
+        print(datall["date"][6]);
+        print(la);
       });
       //return jsonResponse;
     } else {
       //print('Request failed with status: ${response.statusCode}.');
     }
   }
-
+  _addData() async {
+    var apiUrl = Uri.parse(newUrl);
+    var response = await http.get(apiUrl);
+    if (response.statusCode == 200) {
+      Map jsonResponse =
+      convert.jsonDecode(response.body) as Map<String, dynamic>;
+      //var itemCount = jsonResponse['totalItems'];
+      setState(() {
+        _stories.addAll(jsonResponse["stories"]);
+        newUrl='http://news.at.zhihu.com/api/4/news/before/'+jsonResponse["date"];
+      });
+      //return jsonResponse;
+    }
+  }
   Map<String, String> month = {
     "0": "0",
     "01": "一月",
@@ -81,12 +96,13 @@ class _HomeContentState extends State<HomeContent> {
   void _onLoading() async {
     // monitor network fetch
     await Future.delayed(const Duration(milliseconds: 300));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    // if failed,use loadFailed(),if no data return,use LoadData()
     //items.add((items.length + 1).toString());
     if (mounted) {
       setState(() {
-        //_getData();
-        _stories.addAll(datall["stories"]);
+        print(nowUrl);
+        _addData();
+        //_stories.addAll(datall["stories"]);
       });
     }
     _refreshController.loadComplete();
