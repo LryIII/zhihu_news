@@ -54,7 +54,7 @@ class _HomeContentState extends State<HomeContent> {
           "image_hue": "0x2c2230",
           "title": jsonResponse["date"],
           "url": jsonResponse["stories"][0]["url"],
-          "hint": "",
+          "hint": "lryhhh",
           "ga_prefix": "121607",
           "images": [
             "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"
@@ -147,14 +147,14 @@ class _HomeContentState extends State<HomeContent> {
               height: 4,
             ),
             Text(
-              "$da", //"nihao",//datall["date"],//.substring(4,6),
+              "$da",
               style: const TextStyle(color: Colors.black),
             ),
             const SizedBox(
               height: 3,
             ),
             Text(
-              month[mo.toString()] ?? "error", //datall["date"].substring(6),
+              month[mo.toString()] ?? "error",
               style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
           ],
@@ -191,106 +191,142 @@ class _HomeContentState extends State<HomeContent> {
             itemCount: _stories.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return SizedBox(
-                  height: 250,
-                  width: 250,
-                  child: Swiper(
-                    itemCount: _topStories.length,
-                    itemBuilder: (BuildContext context, int index_1) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/details',
-                              arguments: {"url": _topStories[index_1]["url"]});
-                        },
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: const Alignment(0, 0),
-                              child: Container(
-                                height: 250,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        _topStories[index_1]["image"]),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: const Alignment(-1, 1),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _topStories[index_1]["title"],
-                                    style: const TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    _topStories[index_1]["hint"],
-                                    style: const TextStyle(
-                                      color: Colors.white38,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                    pagination: const SwiperPagination(
-                      alignment: Alignment.bottomRight,
-                    ),
-                    //control: SwiperControl(),
-                    loop: true,
-                    autoplay: true,
-                  ),
-                );
+                return topStoriesSwiper();
               }
-              return GestureDetector(
-                onTap: () {
-                  //路由跳转
-                  Navigator.pushNamed(context, '/details',
-                      arguments: {"url": _stories[index - 1]["url"]});
-                  //{"url":"www.baidu.com"});
-                },
-                child: Card(
-                  child: ListTile(
-                    title: Text(
-                      _stories[index - 1]["title"],
-                      style: const TextStyle(fontSize: 18.0),
-                    ),
-                    subtitle: Text(
-                      _stories[index - 1]["hint"] ?? "你好",
-                      style: const TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.black38,
-                      ),
-                    ),
-                    trailing: Container(
-                      height: 40.0,
-                      width: 40.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(_stories[index - 1]["images"][0]),
-                          fit: BoxFit.cover,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
+              return storiesTile(index);
+            },
+            physics: const BouncingScrollPhysics(),
+          )),
+    );
+  }
+  Widget topStoriesSwiper(){
+    return SizedBox(
+      height: 250,
+      width: 250,
+      child: Swiper(
+        itemCount: _topStories.length,
+        itemBuilder: (BuildContext context, int index_1) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/details',
+                  arguments: {"url": _topStories[index_1]["url"]});
+            },
+            child: Stack(
+              children: [
+                Align(
+                  alignment: const Alignment(0, 0),
+                  child: Container(
+                    height: 250,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            _topStories[index_1]["image"]),
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
                 ),
-              );
-            },
-            physics: const BouncingScrollPhysics(),
-          )),
+                Align(
+                  alignment: const Alignment(-1, 1),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _topStories[index_1]["title"],
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        _topStories[index_1]["hint"],
+                        style: const TextStyle(
+                          color: Colors.white38,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+        pagination: const SwiperPagination(
+          alignment: Alignment.bottomRight,
+        ),
+        //control: SwiperControl(),
+        loop: true,
+        autoplay: true,
+      ),
+    );
+  }
+  Widget storiesTile(int index){
+    if(_stories[index-1]["hint"]=="lryhhh"){
+      int date=int.parse(_stories[index-1]["title"]);
+      int day=date%100,month=date~/100%100;
+      return SizedBox(
+        height: 50,
+        child:Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                " $month月 $day日",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Container(
+                  height: 1,
+                  width: 257.7,
+                  color: Colors.grey,
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    }
+    return GestureDetector(
+      onTap: () {
+        //路由跳转
+        Navigator.pushNamed(context, '/details',
+            arguments: {"url": _stories[index - 1]["url"]});
+        //{"url":"www.baidu.com"});
+      },
+      child: Card(
+        child: ListTile(
+          title: Text(
+            _stories[index - 1]["title"],
+            style: const TextStyle(fontSize: 18.0),
+          ),
+          subtitle: Text(
+            _stories[index - 1]["hint"] ?? "你好",
+            style: const TextStyle(
+              fontSize: 15.0,
+              color: Colors.black38,
+            ),
+          ),
+          trailing: Container(
+            height: 40.0,
+            width: 40.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(_stories[index - 1]["images"][0]),
+                fit: BoxFit.cover,
+              ),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
