@@ -43,6 +43,7 @@ dependencies:
   video_player: ^2.2.6
   webview_flutter: ^2.3.1
   shake_animation_widget: ^2.1.2
+  flutter_smart_dialog: ^3.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
