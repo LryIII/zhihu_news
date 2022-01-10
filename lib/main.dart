@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zhihu_news/routes/details.dart';
-import 'package:zhihu_news/routes/login_page.dart';
-import 'package:zhihu_news/routes/register.dart';
+import 'package:zhihu_news/routes/routes_list.dart';
 import 'package:zhihu_news/tabs/home_content.dart';
 
 void main() {
@@ -20,37 +18,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: (RouteSettings settings){
-        final routes={
-          '/':(context)=>const HomeContent(),
-          '/details':(context,{arguments})=>Details(arguments:arguments),
-          '/login':(context)=> const LoginPage(),
-          '/register':(context)=>const RegisterPage(),
-        };
-
-        final String? name=settings.name;
-        final Function? pageContentBuilder = routes[name];
-        if(pageContentBuilder != null){
-          if(settings.arguments != null){
-            final Route route = MaterialPageRoute(
-                builder:(context)=>pageContentBuilder(
-                    context,
-                    arguments:settings.arguments
-                )
-            );
-            return route;
-          }
-          else{
-            final Route route = MaterialPageRoute(
-                builder: (context)=>pageContentBuilder(context)
-            );
-            return route;
-          }
-        }
-      },
-      home:const HomeContent(),
+      onGenerateRoute: onGenerateRoute,
+      home:HomeContent(),
     );
   }
 }

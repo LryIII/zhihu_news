@@ -23,7 +23,7 @@ class Details extends StatelessWidget {
         ),
         body: Builder(builder: (BuildContext context) {
           return WebView(
-            initialUrl: arguments != null ? arguments['url'] : '0',
+            initialUrl:"https://news-at.zhihu.com/api/3/news/latest",// arguments != null ? arguments['url'] : '0',
             javascriptMode: JavascriptMode.unrestricted,
             // onProgress: (int progress) {
             //   //print("WebView is loading (progress : $progress%)");
