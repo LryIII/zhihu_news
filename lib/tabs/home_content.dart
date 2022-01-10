@@ -22,7 +22,7 @@ class _HomeContentState extends State<HomeContent> {
   }
 
   Map datall = {};
-  List _stories = [], _topStories = [];
+  List stories = [], _topStories = [];
   int dateNow = 0, mo = 0, da = 0;
   String addUrl=' ';
   _getData() async {
@@ -33,7 +33,7 @@ class _HomeContentState extends State<HomeContent> {
       Map jsonResponse =response.data;
       setState(() {
         datall = jsonResponse;
-        _stories.addAll(datall["stories"]);
+        stories.addAll(datall["stories"]);
         _topStories = datall["top_stories"];
         dateNow = int.parse(datall["date"]);
         addUrl='http://news.at.zhihu.com/api/4/news/before/'+datall["date"];
@@ -60,23 +60,22 @@ class _HomeContentState extends State<HomeContent> {
             "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"
           ],
         };
-        _stories.add(dateMap);
-        _stories.addAll(jsonResponse["stories"]);
+        stories.add(dateMap);
+        stories.addAll(jsonResponse["stories"]);
         addUrl='http://news.at.zhihu.com/api/4/news/before/'+jsonResponse["date"];
       });
     }
   }
   Map<String, String> month = {
-    "0": "0",
-    "01": "一月",
-    "02": "二月",
-    "03": "三月",
-    "04": "四月",
-    "05": "五月",
-    "06": "六月",
-    "07": "七月",
-    "08": "八月",
-    "09": "九月",
+    "1": "一月",
+    "2": "二月",
+    "3": "三月",
+    "4": "四月",
+    "5": "五月",
+    "6": "六月",
+    "7": "七月",
+    "8": "八月",
+    "9": "九月",
     "10": "十月",
     "11": "十一月",
     "12": "十二月",
@@ -147,14 +146,14 @@ class _HomeContentState extends State<HomeContent> {
               height: 4,
             ),
             Text(
-              "$da",
+              da==0?"":"$da",
               style: const TextStyle(color: Colors.black),
             ),
             const SizedBox(
               height: 3,
             ),
             Text(
-              month[mo.toString()] ?? "error",
+              month[mo.toString()] ?? "",
               style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
           ],
@@ -188,7 +187,7 @@ class _HomeContentState extends State<HomeContent> {
           onRefresh: _onRefresh,
           onLoading: _onLoading,
           child: ListView.builder(
-            itemCount: _stories.length + 1,
+            itemCount: stories.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
                 return topStoriesSwiper();
@@ -256,15 +255,13 @@ class _HomeContentState extends State<HomeContent> {
         pagination: const SwiperPagination(
           alignment: Alignment.bottomRight,
         ),
-        //control: SwiperControl(),
-        loop: true,
         autoplay: true,
       ),
     );
   }
   Widget storiesTile(int index){
-    if(_stories[index-1]["hint"]=="lryhhh"){
-      int date=int.parse(_stories[index-1]["title"]);
+    if(stories[index-1]["hint"]=="lryhhh"){
+      int date=int.parse(stories[index-1]["title"]);
       int day=date%100,month=date~/100%100;
       return SizedBox(
         height: 50,
@@ -297,17 +294,17 @@ class _HomeContentState extends State<HomeContent> {
       onTap: () {
         //路由跳转
         Navigator.pushNamed(context, '/details',
-            arguments: {"url": _stories[index - 1]["url"]});
+            arguments: {"url": stories[index - 1]["url"]});
         //{"url":"www.baidu.com"});
       },
       child: Card(
         child: ListTile(
           title: Text(
-            _stories[index - 1]["title"],
+            stories[index - 1]["title"],
             style: const TextStyle(fontSize: 18.0),
           ),
           subtitle: Text(
-            _stories[index - 1]["hint"] ?? "你好",
+            stories[index - 1]["hint"] ?? "你好",
             style: const TextStyle(
               fontSize: 15.0,
               color: Colors.black38,
@@ -318,7 +315,7 @@ class _HomeContentState extends State<HomeContent> {
             width: 40.0,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(_stories[index - 1]["images"][0]),
+                image: NetworkImage(stories[index - 1]["images"][0]),
                 fit: BoxFit.cover,
               ),
               color: Colors.white,

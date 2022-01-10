@@ -4,27 +4,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:zhihu_news/tabs/home_content.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-class RootPage extends StatelessWidget {
-  const RootPage({Key? key}) : super(key: key);
+// class LoginPage extends StatelessWidget {
+//   const LoginPage({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       home: HomePage(),
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _TestPageState createState() => _TestPageState();
 }
 
-class _TestPageState extends State<HomePage> {
+class _TestPageState extends State<LoginPage> {
   //用户名输入框的焦点控制
   final FocusNode _userNameFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
@@ -37,43 +37,56 @@ class _TestPageState extends State<HomePage> {
   final StreamController<String?> _userNameStream = StreamController();
   final StreamController<String?> _userPasswordStream = StreamController();
 
+  Map<String?,String?> loginForm={
+    "000":"123456",
+    "001":"123456"
+  };
+  String? passWord,userName;
   @override
   Widget build(BuildContext context) {
     //手势识别点击空白隐藏键盘
-    return GestureDetector(
-      onTap: () {
-        hindKeyBoarder();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              // Navigator.of(context).pushAndRemoveUntil(
-              //     MaterialPageRoute(
-              //         builder: (context)=>const HomeContent()
-              //     ),
-              //     (route) => route==null,
-              // );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      navigatorObservers: [FlutterSmartDialog.observer],
+      builder: FlutterSmartDialog.init(),
 
-              //Navigator.popUntil(context, (route) => false);
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
+      home: GestureDetector(
+        onTap: () {
+          hindKeyBoarder();
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                // Navigator.of(context).pushAndRemoveUntil(
+                //     MaterialPageRoute(
+                //         builder: (context)=>const HomeContent()
+                //     ),
+                //     (route) => route==null,
+                // );
+
+                //Navigator.popUntil(context, (route) => false);
+                userName=' ';
+                passWord='';
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+            ),
+            backgroundColor: Colors.white,
+            title: const Text(
+              "登录-知乎",
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
           ),
-          backgroundColor: Colors.white,
-          title: const Text(
-            "登录-知乎",
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+          //登录页面的主体
+          resizeToAvoidBottomInset: false,
+          body: buildLoginWidget(),
         ),
-        //登录页面的主体
-        resizeToAvoidBottomInset: false,
-        body: buildLoginWidget(),
       ),
     );
   }
@@ -167,7 +180,7 @@ class _TestPageState extends State<HomePage> {
               },
               onChanged: (data){
                 if(checkUserPassword()){
-
+                  passWord=data;
                 }
               },
               //隐藏输入的文本
@@ -209,6 +222,7 @@ class _TestPageState extends State<HomePage> {
                 //点击校验，如果有内容输入 输入焦点跳入下一个输入框
                 if (checkUserName()) {
                   _userNameFocusNode.unfocus();
+                  //print(userName);
                   FocusScope.of(context).requestFocus(_passwordFocusNode);
                 } else {
                   FocusScope.of(context).requestFocus(_userNameFocusNode);
@@ -216,7 +230,7 @@ class _TestPageState extends State<HomePage> {
               },
               onChanged: (data){
                 if(checkUserName()){
-
+                  userName=data;
                 }
               },
               //边框样式设置
@@ -264,8 +278,8 @@ class _TestPageState extends State<HomePage> {
   }
 
   bool checkUserPassword() {
-    String userPassrowe = _passwordController.text;
-    if (userPassrowe.length < 6) {
+    String userPassword = _passwordController.text;
+    if (userPassword.length < 6) {
       _userPasswordStream.add("请输入标准密码");
       //_userPasswordAnimation.start();
       return false;
@@ -285,6 +299,21 @@ class _TestPageState extends State<HomePage> {
   }
 
   void loginFunction() {
-
+    if(loginForm[userName]==passWord){
+      userName=' ';
+      passWord='';
+      Navigator.pop(context);
+    }
+    else if(loginForm[userName]==null){
+      SmartDialog.showToast(
+        "账号不存在",
+        time: const Duration(milliseconds: 1000),
+      );
+    }else{
+      SmartDialog.showToast(
+        "账号或密码错误",
+        time: const Duration(milliseconds: 1000),
+      );
+    }
   }
 }
