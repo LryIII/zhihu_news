@@ -278,8 +278,8 @@ class _TestPageState extends State<LoginPage> {
   }
 
   bool checkUserPassword() {
-    String userPassrowe = _passwordController.text;
-    if (userPassrowe.length < 6) {
+    String userPassword = _passwordController.text;
+    if (userPassword.length < 6) {
       _userPasswordStream.add("请输入标准密码");
       //_userPasswordAnimation.start();
       return false;
