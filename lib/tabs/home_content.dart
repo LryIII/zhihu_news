@@ -108,36 +108,41 @@ class _HomeContentState extends State<HomeContent> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          children: [
-            const Text(
+          children: const [
+            Text(
               "知乎日报",
               style: TextStyle(
                 fontSize: 25.0,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(
-              width: 160.0,
-            ),
-            GestureDetector(
-              onTap: (){
-                Navigator.pushNamed(context, '/login');
-              },
-              child: ClipOval(
-                child: Container(
-                  width: 35.0,
-                  height: 35.0,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                    image: NetworkImage(
-                        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"),
-                    fit: BoxFit.cover,
-                  )),
-                ),
-              ),
-            ),
           ],
         ),
+        actions: <Widget>[
+          GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, '/login');
+            },
+            child: CircleAvatar(
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage("https://gimg2.baidu.com/image_search/"
+                        "src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2F"
+                        "img_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2F"
+                        "www.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0"
+                        "&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"
+                    ),
+                    fit: BoxFit.cover,
+                  )
+                )
+              )
+            ),
+          ),
+          const SizedBox(width: 6.6,)
+        ],
         backgroundColor: Colors.white,
         shadowColor: Colors.black,
         leading: Column(
