@@ -4,7 +4,6 @@ import 'package:zhihu_news/tabs/home_content.dart';
 
 import 'details.dart';
 import 'login_page.dart';
-
 final routes={
   '/':(context)=>const HomeContent(),
   '/details':(context,{arguments})=>Details(arguments:arguments),

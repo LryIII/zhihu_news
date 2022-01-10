@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zhihu_news/routes/routes_list.dart';
 import 'package:zhihu_news/tabs/home_content.dart';

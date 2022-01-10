@@ -82,7 +82,7 @@ class _HomeContentState extends State<HomeContent> {
   };
 
   final RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
@@ -129,10 +129,10 @@ class _HomeContentState extends State<HomeContent> {
                   height: 35.0,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(
-                            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"),
-                        fit: BoxFit.cover,
-                      )),
+                    image: NetworkImage(
+                        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"),
+                    fit: BoxFit.cover,
+                  )),
                 ),
               ),
             ),
@@ -146,14 +146,14 @@ class _HomeContentState extends State<HomeContent> {
               height: 4,
             ),
             Text(
-              "$da",
+              da==0?"":"$da",
               style: const TextStyle(color: Colors.black),
             ),
             const SizedBox(
               height: 3,
             ),
             Text(
-              month[mo.toString()] ?? "0",
+              month[mo.toString()] ?? "",
               style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
           ],
@@ -209,7 +209,6 @@ class _HomeContentState extends State<HomeContent> {
             onTap: () {
               Navigator.pushNamed(context, '/details',
                   arguments: {"url": _topStories[index_1]["url"]});
-              print(_topStories[index_1]["url"]);
             },
             child: Stack(
               children: [
@@ -256,8 +255,6 @@ class _HomeContentState extends State<HomeContent> {
         pagination: const SwiperPagination(
           alignment: Alignment.bottomRight,
         ),
-        //control: SwiperControl(),
-        loop: true,
         autoplay: true,
       ),
     );
@@ -274,11 +271,11 @@ class _HomeContentState extends State<HomeContent> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                  " $month月 $day日",
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  )
+                " $month月 $day日",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                )
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
