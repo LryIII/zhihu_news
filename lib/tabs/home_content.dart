@@ -57,7 +57,13 @@ class _HomeContentState extends State<HomeContent> {
           "hint": "lryhhh",
           "ga_prefix": "121607",
           "images": [
-            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.yidianzhidao.com%2FUploadFiles%2Fimg_2_1794357771_1636988519_26.jpg&refer=http%3A%2F%2Fwww.yidianzhidao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738beeac4e66b1396b1309d6f14c"
+            "https://gimg2.baidu.com/image_search/"
+            "src=http%3A%2F%2Fwww.yidianzhidao.com"
+            "%2FUploadFiles%2Fimg_2_1794357771_1"
+            "636988519_26.jpg&refer=http%3A%2F%2Fwww."
+            "yidianzhidao.com&app=2002&size=f9999,10000&q"
+            "=a80&n=0&g=0n&fmt=jpeg?sec=1640429075&t=d814738"
+            "beeac4e66b1396b1309d6f14c"
           ],
         };
         stories.add(dateMap);
@@ -93,11 +99,14 @@ class _HomeContentState extends State<HomeContent> {
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(const Duration(milliseconds: 500));
+    //await Future.delayed(const Duration(milliseconds: 500));
     // if failed,use loadFailed(),if no data return,use LoadData()
     if (mounted) {
+      await _addData();
+      await _addData();
+      await _addData();
       setState(() {
-        _addData();
+        //_addData();
       });
     }
     _refreshController.loadComplete();
@@ -200,7 +209,8 @@ class _HomeContentState extends State<HomeContent> {
               return storiesTile(index);
             },
             physics: const BouncingScrollPhysics(),
-          )),
+          )
+      ),
     );
   }
   Widget topStoriesSwiper(){
@@ -215,46 +225,7 @@ class _HomeContentState extends State<HomeContent> {
               Navigator.pushNamed(context, '/details',
                   arguments: {"url": _topStories[index_1]["url"]});
             },
-            child: Stack(
-              children: [
-                Align(
-                  alignment: const Alignment(0, 0),
-                  child: Container(
-                    height: 250,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            _topStories[index_1]["image"]),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: const Alignment(-1, 1),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _topStories[index_1]["title"],
-                        style: const TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        _topStories[index_1]["hint"],
-                        style: const TextStyle(
-                          color: Colors.white38,
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+            child: topImage(index_1),
           );
         },
         pagination: const SwiperPagination(
@@ -264,6 +235,72 @@ class _HomeContentState extends State<HomeContent> {
       ),
     );
   }
+
+  Widget topImage(int index){
+    int color_10=int.parse(_topStories[index]["image_hue"]);
+    int color_16=color_10+0xff000000;
+    return Stack(
+      children: [
+        Align(
+          alignment: const Alignment(0, 0),
+          child: Container(
+            height: 250,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                    _topStories[index]["image"]),
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: const Alignment(0, 1),
+          child: Container(
+            height: 66,
+            decoration: BoxDecoration(
+              ///LinearGradient渐变色
+              ///begin,end 为初始与结束 方位
+              ///colors 为储存渐变色色彩范围的数组
+              gradient: LinearGradient(
+                begin: const Alignment(0,1),
+                end: const Alignment(0,-1),
+                colors: [
+                  Color(color_16),
+                  const Color(0x00000000),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: const Alignment(-1, 1),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _topStories[index]["title"],
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                _topStories[index]["hint"],
+                style: const TextStyle(
+                  color: Colors.white38,
+                ),
+              )
+            ],
+          ),
+        ),
+
+      ],
+    );
+  }
+
   Widget storiesTile(int index){
     if(stories[index-1]["hint"]=="lryhhh"){
       int date=int.parse(stories[index-1]["title"]);
